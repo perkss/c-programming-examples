@@ -48,11 +48,9 @@ void returningPointers() {
 
     free(arr);
 
-    int *arr2;
-    arr2 = (int *) malloc(size * sizeof(int)); // this can be done with Realloc if single default value
-
     // Simply manipulate the provided allocated array to be populated
-    voidAllocateArray(arr2, size, 1);
+    int *arr2 = NULL;
+    voidAllocateArray(&arr2, size, 33);
 
     printArray(arr2, size);
 

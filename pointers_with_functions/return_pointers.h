@@ -3,6 +3,6 @@
 
 int *allocateArray(int *arr, int size, int value);
 
-void voidAllocateArray(int *arr, int size, int value);
+void voidAllocateArray(int **arr, int size, int value);
 
 #endif
