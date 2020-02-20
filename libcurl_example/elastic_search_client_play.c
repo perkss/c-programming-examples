@@ -55,6 +55,7 @@ WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     return realsize;
 }
 
+// https://curl.haxx.se/libcurl/c/post-callback.html for getting the data written entered
 void put_request_with_callback(CURL *curl, CURLcode res) {
 
     // this holds the response
@@ -70,13 +71,15 @@ void put_request_with_callback(CURL *curl, CURLcode res) {
     wt.readptr = data;
     wt.sizeleft = strlen(data);
 
+    printf("\nPUT WT is filled with request data %s\n", wt.readptr);
+
     curl = curl_easy_init();
 
     /* First set the URL that is about to receive our POST. */
     curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:9200/chocolate/_doc/1");
 
     /* Now specify we want to POST data */
-    curl_easy_setopt(curl, CURLOPT_POST, 1L);
+    curl_easy_setopt(curl, CURLOPT_PUT, 1L);
 
     /* we want to use our own read function */
     curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
@@ -160,11 +163,11 @@ void put_request_with_callback(CURL *curl, CURLcode res) {
          */
 
         printf("%lu bytes retrieved\n", (unsigned long) chunk.size);
-        printf("Post data  retrieved is %s\n", chunk.memory);
+        printf("Post data retrieved is %s\n", chunk.memory);
 
     }
 
-    printf("\nPost WT is %s\n", wt.readptr);
+    printf("\nPUT WT is empty as sent data and emptied buffer %s\n", wt.readptr);
     /* always cleanup */
     curl_easy_cleanup(curl);
 }
