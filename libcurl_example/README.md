@@ -9,7 +9,7 @@ To test this out. Run `make` to make the project.
 
 Start up Elastic and Kibana with `docker-compose up -d`
 
-Then run the built file.
+Then run the built file `./elastic_search_client_play`
 
 To PUT a document and query it.
 
@@ -38,3 +38,5 @@ Returned document is
   }
 }
 ```
+
+Then clean up the generated executable with `make clean`
