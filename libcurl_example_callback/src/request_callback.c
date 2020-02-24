@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "request_callback.h"
-#include "record.h"
+#include "inc/request_callback.h"
+#include "inc/record.h"
 
 
 /**For writing the data for the requests **/

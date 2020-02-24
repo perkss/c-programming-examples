@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "response_callback.h"
-#include "record.h"
+#include "inc/response_callback.h"
+#include "inc/record.h"
 
 /**
  * For reading the data that is returned into structure

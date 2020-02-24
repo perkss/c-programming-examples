@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
-#include "example_put.h"
-#include "request_callback.h"
-#include "response_callback.h"
-#include "record.h"
+#include "inc/example_put.h"
+#include "inc/request_callback.h"
+#include "inc/response_callback.h"
+#include "inc/record.h"
 
 // https://curl.haxx.se/libcurl/c/post-callback.html for getting the data written entered
 void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) {
