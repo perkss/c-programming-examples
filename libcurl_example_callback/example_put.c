@@ -5,31 +5,28 @@
 #include "example_put.h"
 #include "request_callback.h"
 #include "response_callback.h"
-
-static const char data[] = "{ \"id\": 1, \"name\": \"dark\" }";
+#include "record.h"
 
 // https://curl.haxx.se/libcurl/c/post-callback.html for getting the data written entered
-void put_request_with_callback(CURL *curl, CURLcode res) {
+void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) {
 
     // this holds the response
-    struct Response chunk;
+    struct Record chunk;
 
-    chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+    chunk.payload = malloc(1);  /* will be grown as needed by the realloc above */
     chunk.size = 0;    /* no data at this point */
 
     // TODO this holds the payload for writing data
-    struct Request wt;
+    struct Record wt;
 
     // Assing the data to be posted
-    wt.readptr = data;
-    wt.sizeleft = strlen(data);
+    wt.payload = data;
+    wt.size = strlen(data);
 
-    printf("\nPUT WT is filled with request data %s\n", wt.readptr);
-
-    curl = curl_easy_init();
+    printf("\nPUT WT is filled with request data %s\n", wt.payload);
 
     /* First set the URL that is about to receive our POST. */
-    curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:9200/chocolate/_doc/1");
+    curl_easy_setopt(curl, CURLOPT_URL, url);
 
     /* Now specify we want to POST data */
     curl_easy_setopt(curl, CURLOPT_PUT, 1L);
@@ -76,7 +73,7 @@ void put_request_with_callback(CURL *curl, CURLcode res) {
 #else
     /* Set the expected POST size. If you want to POST large amounts of data,
        consider CURLOPT_POSTFIELDSIZE_LARGE */
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long) wt.sizeleft);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long) wt.size);
 #endif
 
 #ifdef DISABLE_EXPECT
@@ -116,11 +113,11 @@ void put_request_with_callback(CURL *curl, CURLcode res) {
          */
 
         printf("%lu bytes retrieved\n", (unsigned long) chunk.size);
-        printf("Post data retrieved is %s\n", chunk.memory);
+        printf("Post data retrieved is %s\n", chunk.payload);
 
     }
 
-    printf("\nPUT WT is empty as sent data and emptied buffer %s\n", wt.readptr);
+    printf("\nPUT WT is empty as sent data and emptied buffer %s\n", wt.payload);
     /* always cleanup */
     curl_easy_cleanup(curl);
 }

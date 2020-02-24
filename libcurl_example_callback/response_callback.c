@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <curl/curl.h>
 #include "response_callback.h"
-
+#include "record.h"
 
 /**
  * For reading the data that is returned into structure
@@ -15,19 +14,19 @@
  */
 size_t response_callback(void *contents, size_t size, size_t nmemb, void *userp) {
     size_t realsize = size * nmemb;
-    struct Response *mem = (struct Response *) userp;
+    struct Record *mem = (struct Record *) userp;
 
-    char *ptr = realloc(mem->memory, mem->size + realsize + 1);
+    char *ptr = realloc(mem->payload, mem->size + realsize + 1);
     if (ptr == NULL) {
         /* out of memory! */
         printf("not enough memory (realloc returned NULL)\n");
         return 0;
     }
 
-    mem->memory = ptr;
-    memcpy(&(mem->memory[mem->size]), contents, realsize);
+    mem->payload = ptr;
+    memcpy(&(mem->payload[mem->size]), contents, realsize);
     mem->size += realsize;
-    mem->memory[mem->size] = 0;
+    mem->payload[mem->size] = 0;
 
     return realsize;
 }

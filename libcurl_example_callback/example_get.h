@@ -6,6 +6,6 @@
 /**
  * Gets the Indexed Document
  */
-void get_request(CURL *curl_handle, CURLcode res);
+void get_request(CURL *curl_handle, CURLcode res, char *id);
 
 #endif //GLIB_EXAMPLE_GET_H
