@@ -11,7 +11,7 @@
  */
 void get_request(CURL *curl_handle, CURLcode res, char *url) {
 
-    struct Record response;
+    Record response;
     curl_handle = curl_easy_init();
 
     response.payload = malloc(1);  /* will be grown as needed by the realloc above */
