@@ -67,52 +67,11 @@ void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) 
         fprintf(stderr, "curl_easy_perform() failed: %s\n",
                 curl_easy_strerror(res));
     } else {
-        /*
-         * Now, our chunk.memory points to a memory block that is chunk.size
-         * bytes big and contains the remote file.
-         *
-         * Do something nice with it!
-         */
-
         printf("%lu bytes retrieved\n", (unsigned long) response.size);
         printf("Post data retrieved is %s\n", response.payload);
-
     }
 
     printf("\nPUT WT is empty as sent data and emptied buffer %s\n", wt.payload);
     /* always cleanup */
     curl_easy_cleanup(curl);
-}
-
-/**
- * Calls elastic search with a PUT request to install our JSON.
- */
-void put_request(CURL *curl, CURLcode res) {
-
-    curl = curl_easy_init();
-    if (curl) {
-
-        /* Set the headers */
-        struct curl_slist *headers = NULL;
-        headers = curl_slist_append(headers, "Accept: application/json");
-        headers = curl_slist_append(headers, "Content-Type: application/json");
-        headers = curl_slist_append(headers, "charsets: utf-8");
-
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-        /* Say its a PUT */
-        curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
-        /* Set the URL */
-        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:9200/chocolate/_doc/1");
-        /* Specify the data */
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "{ \"id\": 1, \"name\": \"dark\" }");
-
-        /* Perform the request PUTT the JSON, res will get the return code */
-        res = curl_easy_perform(curl);
-
-        if (res != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                    curl_easy_strerror(res));
-
-        curl_easy_cleanup(curl);
-    }
 }
