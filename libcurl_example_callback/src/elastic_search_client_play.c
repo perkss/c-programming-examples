@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <curl/curl.h>
 #include <string.h>
-#include "inc/example_get.h"
-#include "inc/example_put.h"
+#include "example_get.h"
+#include "example_put.h"
 
 int main(void) {
 

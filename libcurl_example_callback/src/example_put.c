@@ -2,23 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
-#include "inc/example_put.h"
-#include "inc/request_callback.h"
-#include "inc/response_callback.h"
-#include "inc/record.h"
+#include "example_put.h"
+#include "request_callback.h"
+#include "response_callback.h"
+#include "record.h"
 
 // https://curl.haxx.se/libcurl/c/post-callback.html for getting the data written entered
 void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) {
 
     curl = curl_easy_init();
 
-    // this holds the response
+    // this holds the response simply stack allocated here no malloc required
     Record response;
 
     response.payload = malloc(1);  /* will be grown as needed by the realloc above */
     response.size = 0;    /* no data at this point */
 
-    // TODO this holds the payload for writing data
+    // this holds the payload for writing data simply stack allocated here
     Record request;
 
     // Accessing the data to be posted

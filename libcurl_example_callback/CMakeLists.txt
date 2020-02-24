@@ -3,7 +3,7 @@ project(libcurl-example-callback VERSION 0.0.1)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories(.)
+include_directories(inc src)
 
 set(CURL_LIBRARY "-lcurl")
 find_package(CURL REQUIRED)

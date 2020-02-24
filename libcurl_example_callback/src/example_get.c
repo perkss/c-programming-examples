@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <curl/curl.h>
-#include "inc/response_callback.h"
-#include "inc/record.h"
+#include "response_callback.h"
+#include "record.h"
 
 // https://curl.haxx.se/libcurl/c/getinmemory.html
 // example of the write call back
