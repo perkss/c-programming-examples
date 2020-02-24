@@ -2,12 +2,27 @@
 
 This folder contains examples of `libcurl` connecting to and querying ElasticSearch.
 
+## Requirements
+cmake
 
 ## Getting Started
 
-To test this out. Run `make` to make the project.
+To test this out. Run the following commands to make the project.
+
+```bash
+mkdir build
+cd build
+cmake ../../libcurl_example_callback
+cmake --build .
+```
 
 Start up Elastic and Kibana with `docker-compose up -d`
+
+Then to run the built file in the build directory `libcurl-example-callback`
+
+```bash
+./libcurl-example-callback
+```
 
 Then run the built file `./elastic_search_client_play`
 
@@ -39,4 +54,4 @@ Returned document is
 }
 ```
 
-Then clean up the generated executable with `make clean`
+Then clean up the generated executable in the build direcotry with `cmake --clean .` and `rm -r build`

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(libcurl-example-callback)
+project(libcurl-example-callback VERSION 0.0.1)
 
 set(CMAKE_C_STANDARD 11)
 

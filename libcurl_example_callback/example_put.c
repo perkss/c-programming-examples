@@ -10,11 +10,13 @@
 // https://curl.haxx.se/libcurl/c/post-callback.html for getting the data written entered
 void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) {
 
-    // this holds the response
-    struct Record chunk;
+    curl = curl_easy_init();
 
-    chunk.payload = malloc(1);  /* will be grown as needed by the realloc above */
-    chunk.size = 0;    /* no data at this point */
+    // this holds the response
+    struct Record response;
+
+    response.payload = malloc(1);  /* will be grown as needed by the realloc above */
+    response.size = 0;    /* no data at this point */
 
     // TODO this holds the payload for writing data
     struct Record wt;
@@ -50,52 +52,12 @@ void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) 
 
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, response_callback);
 
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &chunk);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *) &response);
 
     curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
 
-    /*
-      If you use POST to a HTTP 1.1 server, you can send data without knowing
-      the size before starting the POST if you use chunked encoding. You
-      enable this by adding a header like "Transfer-Encoding: chunked" with
-      CURLOPT_HTTPHEADER. With HTTP 1.0 or without chunked transfer, you must
-      specify the size in the request.
-    */
-#ifdef USE_CHUNKED
-    {
-      struct curl_slist *chunk = NULL;
-
-      chunk = curl_slist_append(chunk, "Transfer-Encoding: chunked");
-      res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-      /* use curl_slist_free_all() after the *perform() call to free this
-         list again */
-    }
-#else
-    /* Set the expected POST size. If you want to POST large amounts of data,
-       consider CURLOPT_POSTFIELDSIZE_LARGE */
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long) wt.size);
-#endif
-
-#ifdef DISABLE_EXPECT
-    /*
-      Using POST with HTTP 1.1 implies the use of a "Expect: 100-continue"
-      header.  You can disable this header with CURLOPT_HTTPHEADER as usual.
-      NOTE: if you want chunked transfer too, you need to combine these two
-      since you can only set one list of headers with CURLOPT_HTTPHEADER. */
-
-    /* A less good option would be to enforce HTTP 1.0, but that might also
-       have other implications. */
-    {
-      struct curl_slist *chunk = NULL;
-
-      chunk = curl_slist_append(chunk, "Expect:");
-
-        printf("Headers back put");
-      res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-      /* use curl_slist_free_all() after the *perform() call to free this
-         list again */
-    }
-#endif
+    /* Set the expected POST data message size. Which we will know in advance */
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE_LARGE, (long) wt.size);
 
     /* Perform the request, res will get the return code */
 
@@ -112,8 +74,8 @@ void put_request_with_callback(CURL *curl, CURLcode res, char *url, char *data) 
          * Do something nice with it!
          */
 
-        printf("%lu bytes retrieved\n", (unsigned long) chunk.size);
-        printf("Post data retrieved is %s\n", chunk.payload);
+        printf("%lu bytes retrieved\n", (unsigned long) response.size);
+        printf("Post data retrieved is %s\n", response.payload);
 
     }
 
