@@ -27,7 +27,7 @@
 *.la
 *.lo
 
-# Shared objects (inc. Windows DLLs)
+# Shared objects (include. Windows DLLs)
 *.dll
 *.so
 *.so.*
@@ -58,3 +58,9 @@ dkms.conf
 
 .idea/
 cmake-build-debug/
+build/
+MyProject.xcodeproj/
+CMakeScripts/
+cmake_install.cmake
+CMakeCache.txt
+MyProject.build/
